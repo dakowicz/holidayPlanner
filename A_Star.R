@@ -6,7 +6,9 @@ flightCost <- read.csv(file = "flightCost.csv")
 hotelCost <- read.csv(file = "hotelCost.csv")
 cities <- read.csv(file = "cities.csv")
 
-M <- 1
+isTargetDay <- function(state, dayNum) {
+  return(state$dayNum == dayNum)
+}
 
 getFlightCost <- function(cityA, cityB) {
   return(flightCost %>% 
@@ -30,10 +32,10 @@ getTotalCost <- function(cityStart, cityDest) {
   return(getFlightCost(cityStart, cityDest) + getHotelCost(cityDest))
 }
 
-computeTarget <- function(cStart, cDest, dayNr) {
+computeTarget <- function(cStart, cDest, dayNr, weatherInfluence) {
   action <- getTotalCost(cStart, cDest)
   weatherForCity <- getWeather(cDest, dayNr)
-  return(action*(1/weatherForCity)*M)
+  return(action*(1/weatherForCity)*weatherInfluence)
 }
 
 prepareNodes <- function() {
@@ -45,13 +47,13 @@ prepareNodes <- function() {
   }) %>% select(city,dayNum) %>% arrange(dayNum))
 }
 
-constructGraph <- function(nodeSet) {
+constructGraph <- function(nodeSet, weatherInfluence) {
   return(ddply(nodeSet, .(city, dayNum), function(x) {
     ddply((nodeSet %>% filter(dayNum == x$dayNum + 1)), .(city, dayNum), function(y) {
       data.frame(
         nodeStart = x,
         nodeDest = y,
-        gScore = computeTarget(x$city, y$city, y$dayNum)$flightCost
+        gScore = computeTarget(x$city, y$city, y$dayNum, weatherInfluence)$flightCost
       )
     })
   })) %>% select(nodeStart.city, nodeStart.dayNum, nodeDest.city, nodeDest.dayNum, gScore)
@@ -100,10 +102,6 @@ removeState <- function(set, state) {
                & set$dayNum == state$dayNum
                & set$hScore == state$hScore
                & set$gScore == state$gScore),])
-}
-
-exists <- function(set, state) {
-  return(tail(duplicated(rbind(set,state)),1))
 }
 
 existsByCityAndDayNum <- function(set, stateR) {
@@ -184,16 +182,28 @@ getResult <- function(set, targetDayNum) {
            slice(which.min(gScore)))
 }
 
-runAStar <- function(targetDayNum) {
+reconstructPath <- function(set, state) {
+  prevState <- set %>%  slice(which(city == state$prevCity & dayNum == (state$dayNum - 1)))
+  if(nrow(prevState) == 0) {
+    return(state)
+  }
+  return(addStates(state, reconstructPath(set, prevState)))
+}
+
+runAStar <- function(targetDayNum, weatherInfluence) {
   nodes <- prepareNodes()
-  edges <- constructGraph(nodes)
+  edges <- constructGraph(nodes, weatherInfluence)
   nodes <- addhScore(nodes, edges, targetDayNum)
   
+  curr <- NULL
   closedSet <- NULL
   openSet <- startState(nodes)
   
   while(nrow(openSet) != 0) {
     curr <- findBest(openSet)
+    if(isTargetDay(curr, targetDayNum)){
+      return(reconstructPath(closedSet, curr))
+    }
 
     closedSet <- addStates(closedSet, curr)
     openSet <- removeState(openSet, curr)
@@ -203,5 +213,5 @@ runAStar <- function(targetDayNum) {
     openSet <- mergeStates(openSet, openStates)
   }
 
-  return(getResult(closedSet, targetDayNum))
+  stop("Failure - path has not been found")
 }

@@ -2,33 +2,18 @@
     "debugBreakpointsState" : {
         "breakpoints" : [
             {
-                "editor_line_number" : 184,
-                "editor_state" : 1,
-                "function_name" : "runAStar",
-                "function_steps" : "7,3,6",
-                "id" : 45,
+                "editor_line_number" : 182,
+                "editor_state" : 2,
+                "function_name" : "reconstructPath",
+                "function_steps" : "",
+                "id" : 108,
                 "is_package_breakpoint" : false,
                 "is_pending_debug_completion" : false,
-                "line_number" : 184,
+                "line_number" : 182,
                 "needs_updated_steps" : false,
                 "package_name" : "",
                 "path" : "D:/programming/alhe/urlop/A_Star.R",
-                "state" : 1,
-                "type" : 0
-            },
-            {
-                "editor_line_number" : 160,
-                "editor_state" : 1,
-                "function_name" : "addOpenStates",
-                "function_steps" : "3",
-                "id" : 46,
-                "is_package_breakpoint" : false,
-                "is_pending_debug_completion" : false,
-                "line_number" : 160,
-                "needs_updated_steps" : false,
-                "package_name" : "",
-                "path" : "D:/programming/alhe/urlop/A_Star.R",
-                "state" : 1,
+                "state" : 2,
                 "type" : 0
             }
         ]
