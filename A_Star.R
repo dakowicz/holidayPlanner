@@ -32,10 +32,10 @@ getTotalCost <- function(cityStart, cityDest) {
   return(getFlightCost(cityStart, cityDest) + getHotelCost(cityDest))
 }
 
-computeTarget <- function(cStart, cDest, dayNr, weatherInfluence) {
+computeTarget <- function(cStart, cDest, dayNr) {
   action <- getTotalCost(cStart, cDest)
   weatherForCity <- getWeather(cDest, dayNr)
-  return(action*(1/weatherForCity)*weatherInfluence)
+  return(action*(1/weatherForCity))
 }
 
 prepareNodes <- function() {
@@ -53,7 +53,7 @@ constructGraph <- function(nodeSet, weatherInfluence) {
       data.frame(
         nodeStart = x,
         nodeDest = y,
-        gScore = computeTarget(x$city, y$city, y$dayNum, weatherInfluence)$flightCost
+        gScore = computeTarget(x$city, y$city, y$dayNum)$flightCost
       )
     })
   })) %>% select(nodeStart.city, nodeStart.dayNum, nodeDest.city, nodeDest.dayNum, gScore)
@@ -190,12 +190,11 @@ reconstructPath <- function(set, state) {
   return(addStates(state, reconstructPath(set, prevState)))
 }
 
-runAStar <- function(targetDayNum, weatherInfluence) {
+runAStar <- function(targetDayNum) {
   nodes <- prepareNodes()
-  edges <- constructGraph(nodes, weatherInfluence)
+  edges <- constructGraph(nodes)
   nodes <- addhScore(nodes, edges, targetDayNum)
-  
-  curr <- NULL
+
   closedSet <- NULL
   openSet <- startState(nodes)
   
