@@ -1,0 +1,33 @@
+city,weather,DayNum
+start,100,0
+start,100,6
+Malta,50,1
+Malta,50,2
+Malta,50,3
+Malta,70,4
+Malta,2,5
+Lanzarote,12,1
+Lanzarote,30,2
+Lanzarote,50,3
+Lanzarote,70,4
+Lanzarote,2,5
+Dubai,40,1
+Dubai,50,2
+Dubai,10,3
+Dubai,60,4
+Dubai,80,5
+Tenerife,90,1
+Tenerife,40,2
+Tenerife,90,3
+Tenerife,2,4
+Tenerife,50,5
+Miami,99,1
+Miami,60,2
+Miami,89,3
+Miami,40,4
+Miami,50,5
+Sao Paulo,98,1
+Sao Paulo,30,2
+Sao Paulo,50,3
+Sao Paulo,60,4
+Sao Paulo,70,5

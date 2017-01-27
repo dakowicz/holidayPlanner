@@ -1,0 +1,29 @@
+cityStart,cityDest,flightCost
+start,start,0
+start,Malta,200
+start,Lanzarote,300
+start,Dubai,600
+start,Tenerife,500
+start,Miami,1200
+start,Sao Paulo,1100
+Malta,Malta,0
+Malta,Lanzarote,300
+Malta,Dubai,600
+Malta,Tenerife,500
+Malta,Miami,1200
+Malta,Sao Paulo,1100
+Lanzarote,Lanzarote,0
+Lanzarote,Dubai,600
+Lanzarote,Tenerife,500
+Lanzarote,Miami,1200
+Lanzarote,Sao Paulo,1100
+Dubai,Dubai,0
+Dubai,Tenerife,500
+Dubai,Miami,1200
+Dubai,Sao Paulo,1100
+Tenerife,Tenerife,0
+Tenerife,Miami,1200
+Tenerife,Sao Paulo,1100
+Miami,Miami,0
+Miami,Sao Paulo,400
+Sao Paulo,Sao Paulo,0
